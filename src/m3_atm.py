@@ -1,7 +1,70 @@
 import tkinter as tk
+root = tk.Tk()
+root.title("ATM")
+
+
+current_balance_label = tk.Label(root, text="Current Balance ($):")
+current_balance_label.grid(row=0, column=0, padx=10, pady=10, sticky="e")
+
+current_balance_amount_label = tk.Label(root, text="1000")
+current_balance_amount_label.grid(row=0, column=1, padx=10, pady=10, sticky="w")
+
+
+amount_label = tk.Label(root, text="Amount ($):")
+amount_label.grid(row=1, column=0, padx=10, pady=10, sticky="e")
+
+amount_entry = tk.Entry(root)
+amount_entry.grid(row=1, column=1, padx=10, pady=10, sticky="w")
+
+
+button_frame = tk.Frame(root)
+button_frame.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+
+digits = "1234567890"
+for i, digit in enumerate(digits):
+    
+    tk.Button(button_frame, text=digit, width=5, height=2, command=lambda d=digit: amount_entry.insert(tk.END, d)).grid(row=i//3, column=i%3, padx=2, pady=2)
+
+withdraw_button = tk.Button(button_frame, text="Withdraw")
+withdraw_button.grid(row=3, column=1, padx=2, pady=2)
+
+deposit_button = tk.Button(button_frame, text="Deposit")
+deposit_button.grid(row=3, column=2, padx=2, pady=2)
+
+
+def withdraw():
+    try:
+        amount = float(amount_entry.get())
+        current_balance = float(current_balance_amount_label.cget("text"))
+        current_balance -= amount
+        current_balance_amount_label.config(text=str(current_balance))
+        amount_entry.delete(0, tk.END)
+    except ValueError:
+        pass
+
+def deposit():
+    try:
+        amount = float(amount_entry.get())
+        current_balance = float(current_balance_amount_label.cget("text"))
+        current_balance += amount
+        current_balance_amount_label.config(text=str(current_balance))
+        amount_entry.delete(0, tk.END)
+    except ValueError:
+        pass
+
+withdraw_button.config(command=withdraw)
+deposit_button.config(command=deposit)
+
+def key_pressed(event):
+    if event.char.isdigit():
+        amount_entry.insert(tk.END, event.char)
+
+root.bind("<Key>", key_pressed)
+
+root.mainloop()
 
 ###############################################################################
-# TODO: 1. (2 pts)
+# DONE: 1. (2 pts)
 #
 #   The todos in this module are in one comment because you will be modifying
 #   the same bit of code each time. Here you will create a basic ATM
@@ -13,7 +76,7 @@ import tkinter as tk
 #   Once you have done this, then change the above _TODO_ to DONE.
 #
 #
-# TODO: 2. (3 pts)
+# DONE: 2. (3 pts)
 #
 #   For this _todo_, you will create an area where the user's current balance
 #   is displayed. There should be a label that says "Current Balance ($):" and
@@ -27,7 +90,7 @@ import tkinter as tk
 #   Once you have done this, then change the above _TODO_ to DONE.
 #
 #
-# TODO: 3 (3 pts)
+# DONE: 3 (3 pts)
 #
 #   For this _todo_, create two more labels: one that says "Amount ($):" and
 #   another that starts out empty beneath it. This is where the user's amount
@@ -36,7 +99,7 @@ import tkinter as tk
 #   Once you have done this, then change the above _TODO_ to DONE.
 #
 #
-# TODO: 4. (7 pts)
+# DONE: 4. (7 pts)
 #
 #   For this _todo_, you will create all the buttons that the user needs:
 #
@@ -52,7 +115,7 @@ import tkinter as tk
 #   Once you have done this, then change the above _TODO_ to DONE.
 #
 #
-# TODO: 5. (10 pts)
+# DONE: 5. (10 pts)
 #
 #   For this _todo_, using the command keyword on each button to have each
 #   number button type that digit in the amount label above (just like you
@@ -78,7 +141,7 @@ import tkinter as tk
 #   Once you have done this, then change the above _TODO_ to DONE.
 #
 #
-# TODO: 5. (3 pts)
+# DONE: 5. (3 pts)
 #
 #   For this _todo_, bind the window to any keypress so that if the user types
 #   a number, it also types that number into the amount label. Remember, you
